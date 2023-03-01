@@ -1,23 +1,58 @@
-#myMap{
-    height: 500px;
-    margin-left: 50px;
-    margin-right: 50px;
-    display: block;
-    border-radius: 10px 10px 10px 10px;
-    
-}
 
 #h1 {
     text-align: center;
     font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: small;
     background-color: #8e44ad;
     color: white;
     padding:  5px 5px ;
     border-radius: 10px 10px 10px 10px;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
-    display: inline-block;
-    margin-left: 35px;  
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);  
+    margin-right: 30px;
+    margin-left: 30px;  
     margin-bottom: 10px
-  }
+}
 
+#myMap{
+    height: 150px;
+    margin-left: 32px;
+    height: 400px;    
+    width: 65%;
+    display: inline-block;
+    border-radius: 10px 10px 10px 10px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); 
+}
+#panel {
+    width: 25%;
+    padding: 20px;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    line-height: 40px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); 
+}
 
+.range-slider {  
+    width: 55%;  
+}  
+
+.step {  
+    width: 20%;  
+}  
+
+.step img {  
+    width: 100%;  
+}  
+
+#forward {
+    float: right;
+    
+}
+
+#reverse {  
+    float: left;  
+}
+
+.leaflet-popup-content p {
+    margin: 0.2em 0;
+}
