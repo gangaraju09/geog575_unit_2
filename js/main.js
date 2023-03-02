@@ -205,8 +205,12 @@ function updatePropSymbols(attribute){
            var popupContent = "<p><b>Country:</b> " + props.Country + "</p>";
 
            //add formatted attribute to panel content string
+           
            var year = attribute.split("_")[1];
-           popupContent += "<p><b>GDP in " + year + ":</b> " + props[attribute] + " percent</p>";
+           if (props[attribute] != 'Na')
+               popupContent += "<p><b>GDP in " + year + ":</b> " + props[attribute] + " percent</p>";
+            else
+                popupContent += "<p><b>GDP in " + year + ":</b> " + 'No Data' + "</p>";
 
            //update popup with new content
            popup = layer.getPopup();
