@@ -280,28 +280,18 @@ function createSequenceControls(attributes){
             };
 
             //Step 8: update slider
-            //var year = city.properties["GDP_"+ String(year)]
-            document.querySelector('.range-slider').value = index;
+            var year = 1980
+            updateYear = year + (index*5)
+            document.querySelector('.range-slider').value = updateYear;
 
             //Step 9: pass new attribute to update symbols
             updatePropSymbols(attributes[index]);
 
             // update slider value display
-            document.querySelector('#slider-value').textContent = "Year: " + index;
+            document.querySelector('#slider-value').textContent = "Year: " + updateYear;
         })
     })
 
-    //input listener for slider
-    document.querySelector('.range-slider').addEventListener('input', function(){
-        // get the new index value
-        var index = this.value;
-
-        //Step 9: pass new attribute to update symbols
-        updatePropSymbols(attributes[index]);
-
-        // update slider value display
-        document.querySelector('#slider-value').textContent = "Value: " + index;
-    });
 };
 
 
