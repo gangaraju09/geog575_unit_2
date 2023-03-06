@@ -282,13 +282,13 @@ function createSequenceControls(attributes){
             //Step 8: update slider
             var year = 1980
             updateYear = year + (index*5)
-            document.querySelector('.range-slider').value = updateYear;
+            document.querySelector('.range-slider').value = index;
 
             //Step 9: pass new attribute to update symbols
             updatePropSymbols(attributes[index]);
 
             // update slider value display
-            document.querySelector('#slider-value').textContent = "Year: " + updateYear;
+            document.querySelector('#slider-value').textContent = "Year: " + updateYear + " " + "-" + " " + (updateYear+5) ;
         })
     })
 
