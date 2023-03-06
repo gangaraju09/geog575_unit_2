@@ -125,7 +125,7 @@ function calcPropRadius(attValue) {
 // create a function to differentiate values between negative and positive with color variation
 function fillColor(feature, attribute){
     if ( Number(feature.properties[attribute]) > 0){
-        return "#ff7800";
+        return "#43a2ca";
     }
     else if ( Number(feature.properties[attribute]) < 0){
         return "#ff0000";
@@ -145,7 +145,7 @@ function pointToLayer(feature, latlng, attributes){
     var options = {
         fillColor: fillColor(feature, attribute),
         color: "#000",
-        weight: 1,
+        weight: 0,
         opacity: 1,
         fillOpacity: 0.8
     };
@@ -257,12 +257,12 @@ function createSequenceControls(attributes){
     document.querySelector('#panel').insertAdjacentHTML('beforeend','<button class="step" id="forward">Forward</button>');
 
     //replace button content with images
-    document.querySelector('#reverse').insertAdjacentHTML('beforeend',"<img src='assets/reverse.png'>")
-    document.querySelector('#forward').insertAdjacentHTML('beforeend',"<img src='assets/forward.png'>")
+    document.querySelector('#reverse').insertAdjacentHTML('beforeend',"<img src='assets/noun-reverse-3476075.png'>")
+    document.querySelector('#forward').insertAdjacentHTML('beforeend',"<img src='assets/noun-forward-3476045.png'>")
 
     // add element to display value
     document.querySelector('#panel').insertAdjacentHTML('beforeend', "<p id='slider-value'></p>");
-    document.getElementById('panel').innerHTML += '<p style="color: white;">Click forward and Reverse sequence button to view GDP values over different Time periords</p>'
+    document.getElementById('panel').innerHTML += '<p style="color: #43a2ca;">Click forward and Reverse sequence button to view GDP values over different Time periords</p>'
 
     var steps = document.querySelectorAll('.step');
 
