@@ -96,7 +96,7 @@ function calcMinValue(data){
             
             // add the absolute value of the GDP to the array only if it is not "Na"
             if (value != "Na") {
-                allValues.push(Math.abs(value));    
+                allValues.push(Math.abs(value));
             }
         }
     }
@@ -241,7 +241,6 @@ function processData(data){
 };
 
 
-//Step 1: Create new sequence controls
 function createSequenceControls(attributes){
     //create range input element (slider)
     var slider = "<input class='range-slider' type='range'></input>";
@@ -260,7 +259,9 @@ function createSequenceControls(attributes){
     //replace button content with images
     document.querySelector('#reverse').insertAdjacentHTML('beforeend',"<img src='assets/reverse.png'>")
     document.querySelector('#forward').insertAdjacentHTML('beforeend',"<img src='assets/forward.png'>")
-    document.getElementById('panel').innerHTML += '<p style="color: white;">Click forward or Reverse buttons to change time period for 5 years</p>'
+
+    // add element to display value
+    document.querySelector('#panel').insertAdjacentHTML('beforeend', "<p id='slider-value'></p>");
 
     var steps = document.querySelectorAll('.step');
 
@@ -279,10 +280,14 @@ function createSequenceControls(attributes){
             };
 
             //Step 8: update slider
+            //var year = city.properties["GDP_"+ String(year)]
             document.querySelector('.range-slider').value = index;
 
             //Step 9: pass new attribute to update symbols
             updatePropSymbols(attributes[index]);
+
+            // update slider value display
+            document.querySelector('#slider-value').textContent = "Year: " + index;
         })
     })
 
@@ -293,8 +298,12 @@ function createSequenceControls(attributes){
 
         //Step 9: pass new attribute to update symbols
         updatePropSymbols(attributes[index]);
+
+        // update slider value display
+        document.querySelector('#slider-value').textContent = "Value: " + index;
     });
 };
+
 
 // This function retrieves data from a GeoJSON file and processes it using several other functions
 function getData(map){
