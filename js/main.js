@@ -262,6 +262,7 @@ function createSequenceControls(attributes){
 
     // add element to display value
     document.querySelector('#panel').insertAdjacentHTML('beforeend', "<p id='slider-value'></p>");
+    document.getElementById('panel').innerHTML += '<p style="color: white;">Click forward and Reverse sequence button to view GDP values over different Time periords</p>'
 
     var steps = document.querySelectorAll('.step');
 
@@ -289,7 +290,10 @@ function createSequenceControls(attributes){
 
             // update slider value display
             document.querySelector('#slider-value').textContent = "Year: " + updateYear + " " + "-" + " " + (updateYear+5) ;
+            
+            
         })
+        
     })
 
 };
