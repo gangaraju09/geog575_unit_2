@@ -83,6 +83,8 @@ function createMap(){
     //call getData function
     getData(map);
 
+    document.getElementById('h1').innerHTML =  'Countries GDP Change over 5 years time period between 1980 and 2020'; 
+
     
 };
 // create a function to perform calculation for the min value of GDP data
@@ -147,8 +149,8 @@ function pointToLayer(feature, latlng, attributes){
     // set the initial options for the circle markers
     var options = {
         fillColor: fillColor(feature, attribute),
-        color: "#000",
-        weight: 0,
+        color: "#ffffff",
+        weight: 1,
         opacity: 1,
         fillOpacity: 0.8
     };
@@ -375,7 +377,7 @@ function createSequenceControls(attributes) {
     // add element to display value
     var panel = document.getElementById('panel');
     panel.innerHTML += "<p id='slider-value'></p>";
-    panel.innerHTML += "<p style='color: #43a2ca;'>Click forward and Reverse sequence button on the MAP to view GDP values over different Time periods</p>";
+    //panel.innerHTML += "<p style='color: #43a2ca;'>Click forward and Reverse sequence button on the MAP to view GDP values over different Time periods</p>";
   
     // replace button content with images
     //document.querySelector('#reverse').innerHTML += "<img src='assets/noun-reverse-3476075.png'>";
@@ -422,7 +424,7 @@ function createSequenceControls(attributes) {
     slider.value = index;
 
     // update slider value display
-    document.querySelector('#slider-value').textContent = "Year: " + updateYear + " " + "-" + " " + (updateYear + 5);
+   // document.querySelector('#slider-value').textContent = "Year: " + updateYear + " " + "-" + " " + (updateYear + 5);
   
   }  
 // creatinf legend values
@@ -501,7 +503,7 @@ function createLegend(attributes){
                 var cy = 59 - radius;  
 
                 //circle string  
-                svg += '<circle class="legend-circle" id="' + circles[i] + '" r="' + radius + '"cy="' + cy + '" fill="#F47821" fill-opacity="0.8" stroke="#000000" cx="30"/>';  
+                svg += '<circle class="legend-circle" id="' + circles[i] + '" r="' + radius + '"cy="' + cy + '" fill="#43a2ca" fill-opacity="0.8" stroke="#ffffff" cx="30"/>';  
 
                 var textY = i * 20 + 20;            
 
