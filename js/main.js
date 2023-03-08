@@ -244,10 +244,31 @@ function processData(data){
 };
 
 
-function createSequenceControls(attributes) {
-    // create range input element (slider)
-    var slider = "<input class='range-slider' type='range'></input>";
-    document.querySelector("#panel").insertAdjacentHTML('beforeend', slider);
+/*function createSequenceControls(attributes){
+
+    var SequenceControl = L.Control.extend({
+        options: {
+            position: 'bottomleft'
+        },
+
+        onAdd: function () {
+            // create the control container div with a particular class name
+            var container = L.DomUtil.create('div', 'sequence-control-container');
+
+            //create range input element (slider)
+            container.insertAdjacentHTML('beforeend', '<input class="range-slider" type="range">')
+
+            container.insertAdjacentHTML('beforeend', '<button class="step" id="reverse" title="Reverse"><img src="assets/noun-reverse-3476075.png"></button>'); 
+            container.insertAdjacentHTML('beforeend', '<button class="step" id="forward" title="Forward"><img src="assets/noun-forward-3476045.png"></button>'); 
+
+            //disable any mouse event listeners for the container
+            L.DomEvent.disableClickPropagation(container);
+
+            return container;
+        }
+    });
+
+    map.addControl(new SequenceControl());    // add listeners after adding control
 
     // set slider attributes
     document.querySelector(".range-slider").max = 7;
@@ -256,17 +277,17 @@ function createSequenceControls(attributes) {
     document.querySelector(".range-slider").step = 1;
 
     // add step buttons
-    document.querySelector('#panel').insertAdjacentHTML('beforeend', '<button class="step" id="reverse">Reverse</button>');
-    document.querySelector('#panel').insertAdjacentHTML('beforeend', '<button class="step" id="forward">Forward</button>');
+    document.querySelector('#sequence-control-container').insertAdjacentHTML('beforeend', '<button class="step" id="reverse">Reverse</button>');
+    document.querySelector('#sequence-control-container').insertAdjacentHTML('beforeend', '<button class="step" id="forward">Forward</button>');
 
     // add element to display value
     document.querySelector('#panel').insertAdjacentHTML('beforeend', "<p id='slider-value'></p>");
-    document.getElementById('panel').innerHTML += '<p style="color: #43a2ca;">Click forward and Reverse sequence button to view GDP values over different Time periods</p>'
+    document.getElementById('#panel').innerHTML += '<p style="color: #43a2ca;">Click forward and Reverse sequence button to view GDP values over different Time periods</p>'
 
     // replace button content with images
     document.querySelector('#reverse').insertAdjacentHTML('beforeend', "<img src='assets/noun-reverse-3476075.png'>")
     document.querySelector('#forward').insertAdjacentHTML('beforeend', "<img src='assets/noun-forward-3476045.png'>")
-
+   
     // set up event listeners for buttons
     var steps = document.querySelectorAll('.step');
 
@@ -312,7 +333,115 @@ function updateSlider(index, attributes) {
     document.querySelector('#slider-value').textContent = "Year: " + updateYear + " " + "-" + " " + (updateYear + 5);
 }
 
+*/
 
+function createSequenceControls(attributes) {
+
+    var SequenceControl = L.Control.extend({
+      options: {
+        position: 'bottomleft'
+      },
+  
+      onAdd: function() {
+        // create the control container div with a particular class name
+        var container = L.DomUtil.create('div', 'sequence-control-container');
+  
+        //create range input element (slider)
+        container.innerHTML += '<input class="range-slider" type="range">';
+  
+        container.innerHTML += '<button class="step" id="reverse" title="Reverse"><img src="assets/noun-reverse-3476075.png"></button>'; 
+        container.innerHTML += '<button class="step" id="forward" title="Forward"><img src="assets/noun-forward-3476045.png"></button>'; 
+  
+        //disable any mouse event listeners for the container
+        L.DomEvent.disableClickPropagation(container);
+  
+        return container;
+      }
+    });
+  
+    map.addControl(new SequenceControl());    // add listeners after adding control
+  
+    // set slider attributes
+    var slider = document.querySelector(".range-slider");
+    slider.max = 7;
+    slider.min = 0;
+    slider.value = 0;
+    slider.step = 1;
+  
+    // add element to display value
+    var panel = document.getElementById('panel');
+    panel.innerHTML += "<p id='slider-value'></p>";
+    panel.innerHTML += "<p style='color: #43a2ca;'>Click forward and Reverse sequence button on the MAP to view GDP values over different Time periods</p>";
+  
+    // replace button content with images
+    //document.querySelector('#reverse').innerHTML += "<img src='assets/noun-reverse-3476075.png'>";
+    //document.querySelector('#forward').innerHTML += "<img src='assets/noun-forward-3476045.png'>";
+  
+    // set up event listeners for buttons
+    var steps = document.querySelectorAll('.step');
+  
+    steps.forEach(function(step) {
+      step.addEventListener("click", function() {
+        var index = slider.value;
+  
+        if (step.id == 'forward') {
+          index++;
+          index = index > 7 ? 0 : index;
+        } else if (step.id == 'reverse') {
+          index--;
+          index = index < 0 ? 7 : index;
+        };
+  
+        // update slider and value display
+        updateSlider(index, attributes);
+  
+        // pass new attribute to update symbols
+        updatePropSymbols(attributes[index]);
+      })
+    })
+  
+    // set up event listener for range slider
+    slider.addEventListener("input", function() {
+      var index = slider.value;
+      // update slider and value display
+      updateSlider(index, attributes);
+      // pass new attribute to update symbols
+      updatePropSymbols(attributes[index]);
+    });
+  }
+  
+  function updateSlider(index, attributes) {
+    // update slider
+    var year = 1980;
+    var updateYear = year + (index * 5);
+    var slider = document.querySelector('.range-slider');
+    slider.value = index;
+
+    // update slider value display
+    document.querySelector('#slider-value').textContent = "Year: " + updateYear + " " + "-" + " " + (updateYear + 5);
+  
+  }  
+
+// Creating legend on the map
+
+function createLegend(attributes){
+    var LegendControl = L.Control.extend({
+        options: {
+            position: 'bottomright'
+        },
+
+        onAdd: function () {
+            // create the control container with a particular class name
+            var container = L.DomUtil.create('div', 'legend-control-container');
+
+            //PUT YOUR SCRIPT TO CREATE THE TEMPORAL LEGEND HERE
+            container.innerHTML = '<p class = "temporalLegend"> GDP in <span class = "year"> 1980 </span></p>'
+            return container;
+        }
+    });
+
+    map.addControl(new LegendControl());
+};
 
 // This function retrieves data from a GeoJSON file and processes it using several other functions
 function getData(map){
@@ -331,6 +460,8 @@ function getData(map){
             createPropSymbols(json, attributes);
             // Create the sequence controls using the createSequenceControls function
             createSequenceControls(attributes);
+
+            createLegend(attributes);
         })
 };
 

@@ -14,15 +14,13 @@
 }
 
 #myMap{
-    height: 150px;
-    margin-left: 32px;
-    height: 400px;    
-    width: 65%;
-    display: inline-block;
-    border-radius: 10px 10px 10px 10px;
+    height: 400px;  
+    width: auto;  
+    /*display: inline-block;
+    border-radius: 10px 10px 10px 10px;*/
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); 
 }
-#panel {
+/*#panel {
     width: 25%;
     padding: 20px;
     display: inline-block;
@@ -31,9 +29,9 @@
     line-height: 40px;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); 
     border-radius: 10px 10px 10px 10px;
-}
+}*/
 
-.range-slider {  
+/*.range-slider {  
     width: 55%;  
 }  
 
@@ -43,7 +41,7 @@
 
 .step img {  
     width: 100%;  
-}  
+} */
 
 #forward {
     float: right;
@@ -57,3 +55,37 @@
 .leaflet-popup-content p {
     margin: 0.2em 0;
 }
+
+/* update css*/
+.sequence-control-container {  
+    width: 350px;  
+    height: 30px;  
+    background-color: rgba(255,255,255,0.8);  
+    padding: 10px;  
+    line-height: 45px;  
+    text-align: center;  
+    border: solid gray 1px;  
+}  
+.legend-control-container {  
+    width: 350px;  
+    height: 30px;  
+    background-color: rgba(255,255,255,0.8);  
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    text-align: center;  
+    border: solid gray 1px;  
+}
+.range-slider {  
+    width: 250px;  
+}  
+
+.step {  
+    width: 40px;  
+}  
+
+.step img {  
+    width: 100%;  
+    height: auto;  
+}
+
