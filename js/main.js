@@ -113,11 +113,11 @@ function calcMinValue(data){
 //calculate the radius of each proportional symbol
 function calcPropRadius(attValue) {
     //constant factor adjusts symbol sizes evenly
-    var minRadius = 1;
+    var minRadius = 1.25;
     // conditional statement for Not available values
     if (attValue === 'Na') {
         // assign radius of 1 for zero attribute values
-        return minRadius = 3;
+        return minRadius = 2;
     }else{
         var radius = 1.0083 * Math.pow(Math.abs(attValue)/minValue,0.5715) * (minRadius);
         return radius;
@@ -163,6 +163,7 @@ function pointToLayer(feature, latlng, attributes){
 
     // create the content for the popup window that appears when the user clicks on the circle marker
     var popupContent = "<p><b>Country:</b> " + feature.properties.Country + "</p>";
+    popupContent += "<p><b>Capital:</b> " + feature.properties.Capital + "</p>";
 
     // extract the year from the attribute name and add the GDP data for that year to the popup content
     var year = attribute.split("_")[1];
@@ -243,62 +244,74 @@ function processData(data){
 };
 
 
-function createSequenceControls(attributes){
-    //create range input element (slider)
+function createSequenceControls(attributes) {
+    // create range input element (slider)
     var slider = "<input class='range-slider' type='range'></input>";
-    document.querySelector("#panel").insertAdjacentHTML('beforeend',slider);
+    document.querySelector("#panel").insertAdjacentHTML('beforeend', slider);
 
-    //set slider attributes
+    // set slider attributes
     document.querySelector(".range-slider").max = 7;
     document.querySelector(".range-slider").min = 0;
     document.querySelector(".range-slider").value = 0;
     document.querySelector(".range-slider").step = 1;
 
-    //add step buttons
-    document.querySelector('#panel').insertAdjacentHTML('beforeend','<button class="step" id="reverse">Reverse</button>');
-    document.querySelector('#panel').insertAdjacentHTML('beforeend','<button class="step" id="forward">Forward</button>');
-
-    //replace button content with images
-    document.querySelector('#reverse').insertAdjacentHTML('beforeend',"<img src='assets/noun-reverse-3476075.png'>")
-    document.querySelector('#forward').insertAdjacentHTML('beforeend',"<img src='assets/noun-forward-3476045.png'>")
+    // add step buttons
+    document.querySelector('#panel').insertAdjacentHTML('beforeend', '<button class="step" id="reverse">Reverse</button>');
+    document.querySelector('#panel').insertAdjacentHTML('beforeend', '<button class="step" id="forward">Forward</button>');
 
     // add element to display value
     document.querySelector('#panel').insertAdjacentHTML('beforeend', "<p id='slider-value'></p>");
-    document.getElementById('panel').innerHTML += '<p style="color: #43a2ca;">Click forward and Reverse sequence button to view GDP values over different Time periords</p>'
+    document.getElementById('panel').innerHTML += '<p style="color: #43a2ca;">Click forward and Reverse sequence button to view GDP values over different Time periods</p>'
 
+    // replace button content with images
+    document.querySelector('#reverse').insertAdjacentHTML('beforeend', "<img src='assets/noun-reverse-3476075.png'>")
+    document.querySelector('#forward').insertAdjacentHTML('beforeend', "<img src='assets/noun-forward-3476045.png'>")
+
+    // set up event listeners for buttons
     var steps = document.querySelectorAll('.step');
 
-    steps.forEach(function(step){
-        step.addEventListener("click", function(){
+    steps.forEach(function (step) {
+        step.addEventListener("click", function () {
             var index = document.querySelector('.range-slider').value;
-            //Step 6: increment or decrement depending on button clicked
-            if (step.id == 'forward'){
+
+            if (step.id == 'forward') {
                 index++;
-                //Step 7: if past the last attribute, wrap around to first attribute
                 index = index > 7 ? 0 : index;
-            } else if (step.id == 'reverse'){
+            } else if (step.id == 'reverse') {
                 index--;
-                //Step 7: if past the first attribute, wrap around to last attribute
                 index = index < 0 ? 7 : index;
             };
 
-            //Step 8: update slider
-            var year = 1980
-            updateYear = year + (index*5)
-            document.querySelector('.range-slider').value = index;
+            // update slider and value display
+            updateSlider(index, attributes);
 
-            //Step 9: pass new attribute to update symbols
+            // pass new attribute to update symbols
             updatePropSymbols(attributes[index]);
-
-            // update slider value display
-            document.querySelector('#slider-value').textContent = "Year: " + updateYear + " " + "-" + " " + (updateYear+5) ;
-            
-            
         })
-        
     })
 
-};
+    // set up event listener for range slider
+    var slider = document.querySelector('.range-slider');
+
+    slider.addEventListener("input", function () {
+        var index = slider.value;
+        // update slider and value display
+        updateSlider(index, attributes);
+        // pass new attribute to update symbols
+        updatePropSymbols(attributes[index]);
+    });
+}
+
+function updateSlider(index, attributes) {
+    // update slider
+    var year = 1980
+    var updateYear = year + (index * 5)
+    document.querySelector('.range-slider').value = index;
+
+    // update slider value display
+    document.querySelector('#slider-value').textContent = "Year: " + updateYear + " " + "-" + " " + (updateYear + 5);
+}
+
 
 
 // This function retrieves data from a GeoJSON file and processes it using several other functions
