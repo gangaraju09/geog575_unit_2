@@ -62,6 +62,7 @@ L.geoJSON(geojsonFeature, {
 // create a Maop and minValue in global Space
 var map;
 var minValue;
+var dataStats= {};
 //function to initilaize the Leaflet map
 function createMap(){
     //create the map
@@ -190,6 +191,9 @@ function createPropSymbols(data, attributes){
 
 //Step 10: Resize proportional symbols according to new attribute values
 function updatePropSymbols(attribute){
+    var year = attribute.split("_")[1];
+        //update temporal legend
+    document.querySelector("span.year").innerHTML = year;
     map.eachLayer(function(layer){
       
         if (layer.feature && layer.feature.properties[attribute]){
@@ -421,6 +425,52 @@ function createSequenceControls(attributes) {
     document.querySelector('#slider-value').textContent = "Year: " + updateYear + " " + "-" + " " + (updateYear + 5);
   
   }  
+// creatinf legend values
+  function calcStats(data){
+    //create empty array to store all data values
+    var allValues = [];
+    //loop through each city
+    for(var city of data.features){
+        //loop through each year
+        for(var year = 1980; year <= 2020; year+=5){
+              //get population for current year
+              var value = city.properties["GDP_"+ String(year)];
+              if (Number(value)>0){
+                //add value to array
+                allValues.push(value);
+
+              }
+              
+        }
+    }
+    //get min, max, mean stats for our array
+    dataStats.min = Math.min(...allValues);
+    dataStats.max = Math.max(...allValues);
+    //calculate meanValue
+    var sum = allValues.reduce(function(a, b){return a+b;});
+    dataStats.mean = sum/ allValues.length;
+
+    console.log(dataStats.min, dataStats.max, dataStats.mean)
+
+} 
+
+//calculate the radius of each proportional symbol
+function calcPropRadiusLegend(attValue) {
+    console.log(attValue)
+    //constant factor adjusts symbol sizes evenly
+    var minRadius = 1.25;
+    // conditional statement for Not available values
+    if (attValue === 'Na') {
+        // assign radius of 1 for zero attribute values
+        return minRadius = 2;
+    }else{
+        var radius = 1.0083 * Math.pow(Math.abs(attValue)/minValue,0.5715) * (minRadius);
+        console.log(radius)
+        return radius;
+       
+    }
+    
+};
 
 // Creating legend on the map
 
@@ -436,8 +486,40 @@ function createLegend(attributes){
 
             //PUT YOUR SCRIPT TO CREATE THE TEMPORAL LEGEND HERE
             container.innerHTML = '<p class = "temporalLegend"> GDP in <span class = "year"> 1980 </span></p>'
+
+            //Step 1: start attribute legend svg string
+            var svg = '<svg id="attribute-legend" width="160px" height="60px">';
+
+            //array of circle names to base loop on
+            var circles = ["max", "mean", "min"];
+
+            //Step 2: loop to add each circle and text to svg string  
+            for (var i=0; i<circles.length; i++){  
+
+                //Step 3: assign the r and cy attributes  
+                var radius = calcPropRadiusLegend(dataStats[circles[i]]);  
+                var cy = 59 - radius;  
+
+                //circle string  
+                svg += '<circle class="legend-circle" id="' + circles[i] + '" r="' + radius + '"cy="' + cy + '" fill="#F47821" fill-opacity="0.8" stroke="#000000" cx="30"/>';  
+
+                var textY = i * 20 + 20;            
+
+            //text string            
+                svg += '<text id="' + circles[i] + '-text" x="65" y="' + textY + '">' + Math.round(dataStats[circles[i]]*100)/100 + " % change" + '</text>';
+            };
+
+            
+
+            //close svg string  
+            svg += "</svg>";
+
+            //add attribute legend svg to container
+            container.innerHTML += svg;
+
             return container;
         }
+
     });
 
     map.addControl(new LegendControl());
@@ -456,6 +538,7 @@ function getData(map){
             // Process the JSON data using the processData function and store the resulting attributes and the minimum value
             var attributes = processData(json);
             minValue = calcMinValue(json);
+            calcStats(json);
             // Create proportional symbols for each feature using the createPropSymbols function
             createPropSymbols(json, attributes);
             // Create the sequence controls using the createSequenceControls function
