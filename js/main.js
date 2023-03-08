@@ -83,7 +83,7 @@ function createMap(){
     //call getData function
     getData(map);
 
-    document.getElementById('h1').innerHTML =  'Countries GDP Change over 5 years time period between 1980 and 2020'; 
+    document.getElementById('h1').innerHTML =  'The Evolution of GDP shift in countries over period (1980 - 2020)'; 
 
     
 };
@@ -195,7 +195,7 @@ function createPropSymbols(data, attributes){
 function updatePropSymbols(attribute){
     var year = attribute.split("_")[1];
         //update temporal legend
-    document.querySelector("span.year").innerHTML = year;
+    document.querySelector("span.year").innerHTML = year + " to " +( Number(year) +5);
     map.eachLayer(function(layer){
       
         if (layer.feature && layer.feature.properties[attribute]){
@@ -377,7 +377,8 @@ function createSequenceControls(attributes) {
     // add element to display value
     var panel = document.getElementById('panel');
     panel.innerHTML += "<p id='slider-value'></p>";
-    //panel.innerHTML += "<p style='color: #43a2ca;'>Click forward and Reverse sequence button on the MAP to view GDP values over different Time periods</p>";
+    panel.innerHTML += "<p style='color: #30a1d1; text-align: center;'>Click forward and Reverse sequence button on the MAP to view GDP values over different Time periods</p>";
+
   
     // replace button content with images
     //document.querySelector('#reverse').innerHTML += "<img src='assets/noun-reverse-3476075.png'>";
@@ -485,9 +486,9 @@ function createLegend(attributes){
         onAdd: function () {
             // create the control container with a particular class name
             var container = L.DomUtil.create('div', 'legend-control-container');
-
+            
             //PUT YOUR SCRIPT TO CREATE THE TEMPORAL LEGEND HERE
-            container.innerHTML = '<p class = "temporalLegend"> GDP in <span class = "year"> 1980 </span></p>'
+            container.innerHTML = '<p class = "temporalLegend"> GDP between <span class = "year"> 1980         <span class = "updateYear"</span></span></p>'
 
             //Step 1: start attribute legend svg string
             var svg = '<svg id="attribute-legend" width="160px" height="60px">';
