@@ -76,14 +76,20 @@ function createMap(){
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png', {
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
 	subdomains: 'abcd',
-	maxZoom: 20,
+	maxZoom: 10,
     }).addTo(map);    
+
+    L.control.scale({
+        position: 'topleft'
+    }).addTo(map)
+ 
 
     
     //call getData function
     getData(map);
 
-    document.getElementById('h1').innerHTML =  'The Evolution of GDP shift in countries over period (1980 - 2020)'; 
+    document.getElementById('h1').innerHTML =  'GDP Evolution across World (1980 - 2020)'; 
+    document.getElementById('credits').innerHTML = "<p> <b>Gross Domestic Product (GDP)</b> is the total value of goods and services produced within a country's borders in a given period of time, used as an economic indicator for a country's economic performance. | "+ ""+ " Data Source: <a href = 'https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG'> World Bank Data </a> | "+ " "+ "Credits: Gareth Baldrica-Franklin, RCS Sidhharth</p>" 
 
     
 };
